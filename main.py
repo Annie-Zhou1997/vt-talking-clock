@@ -74,9 +74,13 @@ class TalkingClockApp(QWidget):
         # Timezone combo box
         self.timezone_combo = CustomComboBox(self)
         self.timezone_combo.addItem("Select Other Timezone")
-        for tz in pytz.all_timezones:
-            self.timezone_combo.addItem(tz)
-        self.timezone_combo.setGeometry(10, 10, 190, 30)  # 设置组合框的位置和大小
+        self.timezone_combo.addItem("UTC")
+        self.timezone_combo.addItem("America/New_York")  
+        self.timezone_combo.addItem("Europe/Amsterdam")  
+        self.timezone_combo.addItem("Europe/London")
+        self.timezone_combo.addItem("Asia/Shanghai")  # Beijing same as Shanghai
+        self.timezone_combo.addItem("Europe/Moscow")
+        self.timezone_combo.setGeometry(10, 10, 190, 30)
         self.timezone_combo.currentIndexChanged.connect(self.update_timezone)
 
         # 24 hour format checkbox
