@@ -21,7 +21,9 @@ Here are the members of our group:
 # Required Libraries
 
 以下是运行此代码所需的库和安装命令：
+
 Ниже перечислены библиотеки, необходимые для запуска этого кода, и команды для их установки
+
 Im Folgenden sind die für die Ausführung dieses Codes benötigten Bibliotheken und die Befehle für ihre Installation aufgeführt
 
 - **PyQt6**:
