@@ -89,6 +89,11 @@ class TalkingClockApp(QWidget):
         self.play_button_nl.setGeometry(250, 550, 100, 30)  # 设置按钮的位置和大小 set position and size of button
         self.play_button_nl.clicked.connect(self.play_time_nl)
 
+        # Theme button
+        self.change_clock_face_button = QPushButton('Theme', self)
+        self.change_clock_face_button.setGeometry(400, 400, 100, 30)
+        self.change_clock_face_button.clicked.connect(self.change_clock_face)
+
         # Timezone combo box
         self.timezone_combo = CustomComboBox(self)
         self.timezone_combo.addItem("Select Other Timezone")
