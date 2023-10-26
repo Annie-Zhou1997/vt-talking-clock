@@ -293,7 +293,7 @@ class ClockWidget(QWidget):
 
         # 绘制表盘 draw clock face
         gradient = QRadialGradient(0, 0, clock_radius)
-        gradient.setColorAt(0, QColor(226, 235, 240))
+        gradient.setColorAt(0, QColor(20, 0, 40))
         gradient.setColorAt(1, QColor(207, 217, 233))
         painter.setBrush(QBrush(gradient))
         painter.setPen(QPen(QColor(0, 0, 0), 2))
