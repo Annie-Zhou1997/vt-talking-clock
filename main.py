@@ -301,8 +301,8 @@ class ClockWidget(QWidget):
             painter.drawText(text_position, str(i + 1))
 
             # 绘制刻度
-            line_x = int(clock_radius * 0.6 * math.cos(math.radians(angle)))
-            line_y = int(-clock_radius * 0.6 * math.sin(math.radians(angle)))
+            line_x = int(clock_radius * 0.7 * math.cos(math.radians(angle)))
+            line_y = int(-clock_radius * 0.7 * math.sin(math.radians(angle)))
             painter.setPen(QPen(QColor(0, 0, 0), 2))
             painter.drawLine(line_x, line_y, int(x), int(y))
 
