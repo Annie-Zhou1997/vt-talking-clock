@@ -2,7 +2,7 @@ import sys
 import os
 import pytz
 from PyQt6.QtCore import QTimer, QTime, Qt
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox, QCheckBox, QComboBox, QStylePainter, QStyle, QStyleOptionComboBox, QGridLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox, QCheckBox, QComboBox, QStylePainter, QStyle, QStyleOptionComboBox, QGridLayout, QFileDialog
 from PyQt6.QtWidgets import QTimeEdit
 from PyQt6.QtWidgets import QCalendarWidget
 from PyQt6.QtGui import QPainter, QPen, QBrush, QColor, QFont
@@ -15,7 +15,7 @@ from datetime import datetime
 from dateutil import tz
 import time
 import math
-
+from PyQt6.QtGui import QPixmap
 
 class CustomComboBox(QComboBox):
     def paintEvent(self, event):
@@ -215,6 +215,17 @@ class TalkingClockApp(QWidget):
         else:
             self.timezone = pytz.timezone(selected_timezone)
         self.clock_widget.set_timezone(self.timezone)  # 更新钟表表盘的时区 update timezone of clock face
+    
+    # change clock face which related the 'Theme' button
+    def change_clock_face(self):
+    options = QFileDialog.Option
+    file_dialog = QFileDialog()
+    file_name, _ = file_dialog.getOpenFileName(self, "Select Clock Face Image", "",
+                                               "Images (*.png *.jpg *.jpeg *.bmp);;All Files (*)",
+                                               options=QFileDialog.Option)
+
+        if file_name:
+            self.clock_widget.set_clock_face(file_name)
 
     def show_alarm_window(self):
         self.alarm_window = AlarmWindow(self)
@@ -247,6 +258,11 @@ class ClockWidget(QWidget):
         painter.begin(self)
         self.draw_clock(painter)
         painter.end()
+
+    # change face of clock
+    def set_clock_face(self, image_path):
+        self.clock_face = QPixmap(image_path)
+        self.update()  # 立即更新钟表表盘
 
     def draw_clock(self, painter):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
