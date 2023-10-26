@@ -218,14 +218,14 @@ class TalkingClockApp(QWidget):
     
     # change clock face which related the 'Theme' button
     def change_clock_face(self):
-    options = QFileDialog.Option
-    file_dialog = QFileDialog()
-    file_name, _ = file_dialog.getOpenFileName(self, "Select Clock Face Image", "",
-                                               "Images (*.png *.jpg *.jpeg *.bmp);;All Files (*)",
-                                               options=QFileDialog.Option)
-
-        if file_name:
-            self.clock_widget.set_clock_face(file_name)
+        options = QFileDialog.Option
+        file_dialog = QFileDialog()
+        file_name, _ = file_dialog.getOpenFileName(self, "Select Clock Face Image", "",
+                                                   "Images (*.png *.jpg *.jpeg *.bmp);;All Files (*)",
+                                                   options=QFileDialog.Option)
+    
+            if file_name:
+                self.clock_widget.set_clock_face(file_name)
 
     def show_alarm_window(self):
         self.alarm_window = AlarmWindow(self)
