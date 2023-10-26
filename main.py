@@ -7,15 +7,14 @@ from PyQt6.QtWidgets import QTimeEdit
 from PyQt6.QtWidgets import QCalendarWidget
 from PyQt6.QtGui import QPainter, QPen, QBrush, QColor, QFont
 from PyQt6.QtGui import QRadialGradient
-from PyQt6.QtGui import QFontMetrics
-from PyQt6.QtCore import QPointF,QRectF, QDate
+from PyQt6.QtGui import QFontMetrics, QPixmap
+from PyQt6.QtCore import QPointF,QRectF, QDate, QPoint
 from gtts import gTTS
 from playsound import playsound
 from datetime import datetime
 from dateutil import tz
 import time
 import math
-from PyQt6.QtGui import QPixmap
 
 class CustomComboBox(QComboBox):
     def paintEvent(self, event):
