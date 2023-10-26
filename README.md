@@ -53,3 +53,6 @@ Time zone map
 
 Voice control 
 -make it listen to us when the alarm is on, and if it recognises our “shut up”, the alarm goes off
+
+Theme control
+-change the face of clock when click the 'Theme' button
