@@ -56,3 +56,6 @@ Voice control
 
 Theme control
 -change the face of clock when click the 'Theme' button
+
+Alarm function
+-set time based on your preference and add snooze function
