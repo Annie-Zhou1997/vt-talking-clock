@@ -91,7 +91,7 @@ class TalkingClockApp(QWidget):
 
         # Theme button
         self.change_clock_face_button = QPushButton('Theme', self)
-        self.change_clock_face_button.setGeometry(400, 400, 100, 30)
+        self.change_clock_face_button.setGeometry(400, 470, 100, 30)
         self.change_clock_face_button.clicked.connect(self.change_clock_face)
 
         # Timezone combo box
