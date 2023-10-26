@@ -286,7 +286,7 @@ class ClockWidget(QWidget):
         painter.setPen(QPen(QColor(0, 0, 0), 2))
         painter.drawEllipse(int(-clock_radius), int(-clock_radius), int(2 * clock_radius), int(2 * clock_radius))
 
-        # 绘制刻度和数字 drwa scale and number
+        # 绘制刻度和数字 draw scale and number
         for i in range(12):
             angle = -(i + 10) * 30
             x = clock_radius * math.cos(math.radians(angle))
@@ -332,7 +332,7 @@ class ClockWidget(QWidget):
         painter.rotate(-secs * (360 / 60))
 
         painter.restore()
-
+#setting alarm
 class AlarmWindow(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -350,22 +350,42 @@ class AlarmWindow(QWidget):
         self.music_combo.addItem("Music 2", "path/to/music2.mp3")
         layout.addWidget(self.music_combo)
 
-        self.set_button = QPushButton('Set Alarm', self)
+        self.set_button = QPushButton('Alarm', self)
         self.set_button.clicked.connect(self.set_alarm)
         layout.addWidget(self.set_button)
 
+        self.setStyleSheet("background-color: lightblue;")
+
         self.setWindowTitle('Set Alarm')
-        self.setGeometry(100, 100, 200, 150)
+        self.setGeometry(400, 200, 170, 250)
 
     def set_alarm(self):
         time = self.time_edit.time()
         music_path = self.music_combo.currentData()
         if music_path:
-            print(f"Alarm set to {time.toString()} with music {music_path}")
-            # 在这里添加代码来设置实际的闹钟
-            self.close()
+            current_time = QTime.currentTime()  # Get the current time
+            alarm_time = time
+
+            # Calculate the time until the alarm goes off
+            time_until_alarm = current_time.secsTo(alarm_time)
+            if time_until_alarm > 0:
+                # Schedule the alarm to play the music
+                alarm_timer = QTimer()
+                alarm_timer.timeout.connect(lambda: self.play_alarm(music_path, alarm_timer))
+                alarm_timer.start(time_until_alarm * 1000)  # QTimer works in milliseconds
+            else:
+                QMessageBox.critical(self, "Invalid Alarm Time", "Please select a future time for the alarm.")
         else:
-            print("Please select a music.")
+            QMessageBox.critical(self, "No Music Selected", "Please select a music.")
+
+    def play_alarm(self, music_path, timer):
+        print("Alarm triggered! Playing music...")
+        try:
+            playsound(music_path)
+        except Exception as e:
+            QMessageBox.critical(self, "Error Playing Music", f"An error occurred: {str(e)}")
+        finally:
+            timer.stop()
 
 class CalendarWindow(QWidget):
     def __init__(self):
