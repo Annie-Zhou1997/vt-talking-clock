@@ -3,13 +3,18 @@ import os
 import pytz
 from PyQt6.QtCore import QTimer, QTime, Qt
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox, QCheckBox, QComboBox, QStylePainter, QStyle, QStyleOptionComboBox, QGridLayout
+from PyQt6.QtWidgets import QTimeEdit
+from PyQt6.QtWidgets import QCalendarWidget
 from PyQt6.QtGui import QPainter, QPen, QBrush, QColor, QFont
 from PyQt6.QtGui import QRadialGradient
+from PyQt6.QtGui import QFontMetrics
+from PyQt6.QtCore import QPointF,QRectF, QDate
 from gtts import gTTS
 from playsound import playsound
 from datetime import datetime
 from dateutil import tz
 import time
+import math
 
 
 class CustomComboBox(QComboBox):
@@ -34,41 +39,55 @@ class TalkingClockApp(QWidget):
         timer.timeout.connect(self.show_time)
         timer.start(1000)
         self.show_time()
+        # 日期定时器 date timer
+        self.date_timer = QTimer(self)
+        self.date_timer.timeout.connect(self.update_date)
+        self.date_timer.start(86400000)  # 每天更新一次 
+
+        self.calendar_mini = QCalendarWidget(self)
+        self.calendar_mini.setVisible(False)  # 初始时隐藏日历
 
     def init_ui(self):
         layout = QGridLayout(self)
 
-        # 在这里创建 ClockWidget 的实例并将其添加到布局中
+        # 日期标签 date label
+        self.date_label = QLabel(self)
+        self.date_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.date_label.setStyleSheet("QLabel { font-size: 22px; }")
+        self.date_label.setGeometry(180, 320, 250, 60)  # 你可以根据需要调整位置和大小
+        self.update_date()
+
+        # 在这里创建 ClockWidget 的实例并将其添加到布局中  create an instance of ClockWidget and add it to the layout
         self.clock_widget = ClockWidget(self)
         layout.addWidget(self.clock_widget, 0, 0, 1, 3)
-        # 设置窗口标题和大小
+        # 设置窗口标题和大小 set window title and size
         self.setWindowTitle('Talking Clock')
         self.setGeometry(100, 100, 600, 600)
 
-        # 电子时钟标签
+        # 电子时钟标签 electronic clock label
         self.label = QLabel(self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet("QLabel { font-size: 40px; }")
-        self.label.setGeometry(150, 345, 300, 50)  # 设置电子时钟的位置和大小
+        self.label.setGeometry(150, 380, 300, 50)  # 设置电子时钟的位置和大小 set position and size of electronic clock
 
         # English button
         self.play_button = QPushButton('English', self)
-        self.play_button.setGeometry(250, 400, 100, 30)  # 设置按钮的位置和大小
+        self.play_button.setGeometry(250, 430, 100, 30)  # 设置按钮的位置和大小 set position and size of button
         self.play_button.clicked.connect(self.play_time_en)
 
         # Chinese button
         self.play_button_zh = QPushButton('中文', self)
-        self.play_button_zh.setGeometry(250, 450, 100, 30)  # 设置按钮的位置和大小
+        self.play_button_zh.setGeometry(250, 470, 100, 30)  # 设置按钮的位置和大小  set position and size of button
         self.play_button_zh.clicked.connect(self.play_time_zh)
 
         # Russian button
         self.play_button_ru = QPushButton('Русский', self)
-        self.play_button_ru.setGeometry(250, 500, 100, 30)  # 设置按钮的位置和大小
+        self.play_button_ru.setGeometry(250, 510, 100, 30)  # 设置按钮的位置和大小 set position and size of button
         self.play_button_ru.clicked.connect(self.play_time_ru)
 
         # Dutch button
         self.play_button_nl = QPushButton('Nederlands', self)
-        self.play_button_nl.setGeometry(250, 550, 100, 30)  # 设置按钮的位置和大小
+        self.play_button_nl.setGeometry(250, 550, 100, 30)  # 设置按钮的位置和大小 set position and size of button
         self.play_button_nl.clicked.connect(self.play_time_nl)
 
         # Timezone combo box
@@ -85,9 +104,19 @@ class TalkingClockApp(QWidget):
 
         # 24 hour format checkbox
         self.format_checkbox = QCheckBox('24 Hour Format', self)
-        self.format_checkbox.setGeometry(20, 560, 200, 30)  # 设置复选框的位置和大小
+        self.format_checkbox.setGeometry(20, 560, 200, 30)  # 设置复选框的位置和大小  set position and size of checkbox
         self.format_checkbox.stateChanged.connect(self.update_format)
 
+        # Set Alarm button
+        self.alarm_button = QPushButton('Set Alarm', self)
+        self.alarm_button.setGeometry(480, 10, 100, 30)  # 设置按钮的位置和大小 set position and size of button
+        self.alarm_button.clicked.connect(self.show_alarm_window)
+        
+        # Full Calendar button
+        self.toggle_calendar_button = QPushButton('Calendar', self)
+        self.toggle_calendar_button.setGeometry(480, 50, 100, 30)
+        self.toggle_calendar_button.clicked.connect(self.toggle_calendar)
+        
         self.setStyleSheet("""
             QWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -115,6 +144,13 @@ class TalkingClockApp(QWidget):
                 background-color: #e2ebf0;
             }
         """)
+    def open_full_calendar(self):
+        self.calendar_window = CalendarWindow()
+        self.calendar_window.show()
+
+    def update_date(self):
+        current_date = QDate.currentDate()
+        self.date_label.setText(current_date.toString("yyyy-MM-dd dddd"))
 
     def show_time(self):
         selected_timezone = self.timezone_combo.currentText()
@@ -178,7 +214,21 @@ class TalkingClockApp(QWidget):
             self.timezone = tz.tzlocal()
         else:
             self.timezone = pytz.timezone(selected_timezone)
-        self.clock_widget.set_timezone(self.timezone)  # 更新钟表表盘的时区
+        self.clock_widget.set_timezone(self.timezone)  # 更新钟表表盘的时区 update timezone of clock face
+
+    def show_alarm_window(self):
+        self.alarm_window = AlarmWindow(self)
+        self.alarm_window.show()
+        
+    # 显示或隐藏日历 show or hide calendar
+    def toggle_calendar(self):
+        if self.calendar_mini.isVisible():
+            self.calendar_mini.setVisible(False)
+            self.toggle_calendar_button.setText('show calendar')
+        else:
+            self.calendar_mini.setStyleSheet('background-color: yellow')
+            self.calendar_mini.setVisible(True)
+            self.toggle_calendar_button.setText('hide calendar')
 
 class ClockWidget(QWidget):
     def __init__(self, parent=None):
@@ -186,11 +236,11 @@ class ClockWidget(QWidget):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(1000)
-        self.timezone = tz.tzlocal()  # 默认使用本地时区
+        self.timezone = tz.tzlocal()  # 默认使用本地时区 default to local timezone
 
     def set_timezone(self, timezone):
         self.timezone = timezone
-        self.update()  # 立即更新钟表表盘
+        self.update()  # 立即更新钟表表盘 immediately update clock face
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -202,11 +252,30 @@ class ClockWidget(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         center_x = self.width() / 2
         center_y = self.height() / 3.5
+        #  print(center_x, center_y)
         clock_radius = min(self.width(), self.height()) / 4
         painter.translate(center_x, center_y)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        # 绘制表盘
+
+        # 绘制刻度和数字 drwa scale and number
+        font = QFont("Arial", 20)  # 使用更大的字体大小 draw scale and number
+        painter.setFont(font)
+        font_metrics = QFontMetrics(font)
+        painter.setPen(QColor(0, 0, 0))  # 设置画笔颜色为黑色 draw scale and number
+
+        for i in range(1, 13):
+            angle = math.radians(i * 30)  # 每个小时对应30度，转换为弧度 every hour is 30 degree, convert to radian
+            x = center_x + (clock_radius * 0.7) * math.sin(angle)  # 调整半径的系数为0.7 ajust radius to 0.7
+            y = center_y - (clock_radius * 0.7) * math.cos(angle)  # 调整半径的系数为0.7 ajust radius to 0.7
+            text = str(i)
+            text_width = font_metrics.horizontalAdvance(text)  # 获取文本的宽度 get text width
+            text_height = font_metrics.ascent()  # 获取文本的高度 get text height
+            text_x = int(x - text_width / 2)
+            text_y = int(y + text_height / 4)  # 调整y位置以垂直居中 adjust y position to vertical center
+            painter.drawText(text_x, text_y, text)
+
+        # 绘制表盘 draw clock face
         gradient = QRadialGradient(0, 0, clock_radius)
         gradient.setColorAt(0, QColor(226, 235, 240))
         gradient.setColorAt(1, QColor(207, 217, 233))
@@ -214,37 +283,89 @@ class ClockWidget(QWidget):
         painter.setPen(QPen(QColor(0, 0, 0), 2))
         painter.drawEllipse(int(-clock_radius), int(-clock_radius), int(2 * clock_radius), int(2 * clock_radius))
 
-        # 绘制刻度
+        # 绘制刻度 draw scale
         for i in range(12):
             painter.drawLine(0, round(-clock_radius), 0, round(-clock_radius + 10))
             painter.rotate(30)
 
-        # 获取当前时间
+        # 获取当前时间 get current time
         current_time = datetime.now(self.timezone).time()
         secs = current_time.second
         mins = current_time.minute + secs / 60
         hrs = current_time.hour + mins / 60
 
-        # 绘制时针
+        # 绘制时针 draw hour hand
         painter.setPen(QPen(QColor(50, 50, 50), 6))
         painter.setBrush(QColor(50, 50, 50))
         painter.rotate(hrs * (360 / 12))
         painter.drawRect(-5, int (-clock_radius / 2), 10, int(clock_radius / 2))  # 使用矩形作为时针
         painter.rotate(-hrs * (360 / 12))
 
-        # 绘制分针
+        # 绘制分针 draw minute hand
         painter.setPen(QPen(QColor(0, 0, 0), 4))
         painter.rotate(mins * (360 / 60))
         painter.drawLine(0, 0, 0, round(-clock_radius * 0.7))
         painter.rotate(-mins * (360 / 60))
 
-        # 绘制秒针
+        # 绘制秒针 draw second hand
         painter.setPen(QPen(QColor(255, 0, 0), 2))
         painter.rotate(secs * (360 / 60))
         painter.drawLine(0, 0, 0, round(-clock_radius * 0.9))
         painter.rotate(-secs * (360 / 60))
 
         painter.restore()
+
+class AlarmWindow(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.init_ui()
+
+    def init_ui(self):
+        layout = QVBoxLayout(self)
+
+        self.time_edit = QTimeEdit(self)
+        layout.addWidget(self.time_edit)
+
+        self.music_combo = QComboBox(self)
+        self.music_combo.addItem("Select a Music")
+        self.music_combo.addItem("Music 1", "path/to/music1.mp3")
+        self.music_combo.addItem("Music 2", "path/to/music2.mp3")
+        layout.addWidget(self.music_combo)
+
+        self.set_button = QPushButton('Set Alarm', self)
+        self.set_button.clicked.connect(self.set_alarm)
+        layout.addWidget(self.set_button)
+
+        self.setWindowTitle('Set Alarm')
+        self.setGeometry(100, 100, 200, 150)
+
+    def set_alarm(self):
+        time = self.time_edit.time()
+        music_path = self.music_combo.currentData()
+        if music_path:
+            print(f"Alarm set to {time.toString()} with music {music_path}")
+            # 在这里添加代码来设置实际的闹钟
+            self.close()
+        else:
+            print("Please select a music.")
+
+class CalendarWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.init_ui()
+
+    def init_ui(self):
+        self.layout = QVBoxLayout(self)
+
+        self.calendar = QCalendarWidget(self)
+        # self.calendar.setStyleSheet('background-image: url(你的图片路径); background-repeat: no-repeat; background-position: center')
+
+        self.layout.addWidget(self.calendar)
+        self.setLayout(self.layout)
+
+        self.setGeometry(100, 100, 640, 480)  # 设置窗口的位置和大小
+        self.setWindowTitle('')
 
 
 if __name__ == '__main__':
