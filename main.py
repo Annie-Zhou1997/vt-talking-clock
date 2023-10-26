@@ -273,24 +273,6 @@ class ClockWidget(QWidget):
         painter.translate(center_x, center_y)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-
-        # 绘制刻度和数字 drwa scale and number
-        font = QFont("Arial", 20)  # 使用更大的字体大小 draw scale and number
-        painter.setFont(font)
-        font_metrics = QFontMetrics(font)
-        painter.setPen(QColor(0, 0, 0))  # 设置画笔颜色为黑色 draw scale and number
-
-        for i in range(1, 13):
-            angle = math.radians(i * 30)  # 每个小时对应30度，转换为弧度 every hour is 30 degree, convert to radian
-            x = center_x + (clock_radius * 0.7) * math.sin(angle)  # 调整半径的系数为0.7 ajust radius to 0.7
-            y = center_y - (clock_radius * 0.7) * math.cos(angle)  # 调整半径的系数为0.7 ajust radius to 0.7
-            text = str(i)
-            text_width = font_metrics.horizontalAdvance(text)  # 获取文本的宽度 get text width
-            text_height = font_metrics.ascent()  # 获取文本的高度 get text height
-            text_x = int(x - text_width / 2)
-            text_y = int(y + text_height / 4)  # 调整y位置以垂直居中 adjust y position to vertical center
-            painter.drawText(text_x, text_y, text)
-
         # 绘制表盘 draw clock face
         gradient = QRadialGradient(0, 0, clock_radius)
         gradient.setColorAt(0, QColor(20, 0, 40))
@@ -299,10 +281,25 @@ class ClockWidget(QWidget):
         painter.setPen(QPen(QColor(0, 0, 0), 2))
         painter.drawEllipse(int(-clock_radius), int(-clock_radius), int(2 * clock_radius), int(2 * clock_radius))
 
-        # 绘制刻度 draw scale
+        # 绘制刻度和数字 drwa scale and number
         for i in range(12):
-            painter.drawLine(0, round(-clock_radius), 0, round(-clock_radius + 10))
-            painter.rotate(30)
+            angle = -(i + 10) * 30
+            x = clock_radius * 0.8 * math.cos(math.radians(angle))
+            y = -clock_radius * 0.8 * math.sin(math.radians(angle))
+
+            # 创建 QPoint 对象
+            text_x = int(x - 10)  # 调整数字的水平位置
+            text_y = int(y + 10)  # 调整数字的垂直位置
+            text_position = QPoint(text_x, text_y)
+
+            # 绘制数字
+            painter.drawText(text_position, str(i + 1))
+
+            # 绘制刻度
+            line_x = int(clock_radius * 0.6 * math.cos(math.radians(angle)))
+            line_y = int(-clock_radius * 0.6 * math.sin(math.radians(angle)))
+            painter.setPen(QPen(QColor(0, 0, 0), 2))
+            painter.drawLine(line_x, line_y, int(x), int(y))
 
         # 获取当前时间 get current time
         current_time = datetime.now(self.timezone).time()
