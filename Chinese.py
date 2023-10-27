@@ -12,12 +12,22 @@ def ch_convert(number):
     result_ch = []
     if number <= 10:
         result_ch.append(files[number])
-    elif number < 20:
-        result_ch.append(files[10])
-        result_ch.append(files[int(number)-10])
+
     else:
-        result_ch.append(files[2])
-        result_ch.append(files[10])
-        result_ch.append(files[int(number)-20])
+        decimals, remainder = divmod(number, 10)
+        if decimals > 1:
+            if remainder != 0:
+                result_ch.append(files[decimals])
+                result_ch.append(files[10])
+                result_ch.append(files[remainder])
+            else:
+                result_ch.append(files[decimals])
+                result_ch.append(files[10])
+        else:
+            result_ch.append(files[10])
+            if remainder != 0:
+                result_ch.append(files[remainder])
+
+
 
     return result_ch
