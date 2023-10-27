@@ -1,22 +1,24 @@
 import sys
 import os
 import pytz
-from PyQt6.QtCore import QTimer, QTime, Qt
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox, QCheckBox, QComboBox, QStylePainter, QStyle, QStyleOptionComboBox, QGridLayout, QFileDialog
-from PyQt6.QtWidgets import QTimeEdit
-from PyQt6.QtWidgets import QCalendarWidget
-from PyQt6.QtGui import QPainter, QPen, QBrush, QColor, QFont
-from PyQt6.QtGui import QRadialGradient
-from PyQt6.QtGui import QFontMetrics, QPixmap
-from PyQt6.QtCore import QPointF,QRectF, QDate, QPoint
+import math
+import warnings
+import pygame
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+from pydub import AudioSegment
+from PyQt6.QtCore import QTimer, QTime, Qt, QDate, QPoint
+from PyQt6.QtGui import QPainter, QPen, QBrush, QColor, QRadialGradient, QPixmap
+from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QCheckBox,
+                             QTimeEdit, QMessageBox, QComboBox, QStylePainter, QStyle, QStyleOptionComboBox,
+                             QGridLayout, QFileDialog, QCalendarWidget)
 from gtts import gTTS
-from playsound import playsound
+from tzlocal import get_localzone_name
 from datetime import datetime
 from dateutil import tz
-import time
-import math
-from PyQt6.QtWidgets import QTimeEdit, QMessageBox
 from playsound import playsound
+from Russian import *
+
 
 class CustomComboBox(QComboBox):
     def paintEvent(self, event):
@@ -29,27 +31,31 @@ class CustomComboBox(QComboBox):
         painter.drawComplexControl(QStyle.ComplexControl.CC_ComboBox, opt)
         painter.drawControl(QStyle.ControlElement.CE_ComboBoxLabel, opt)
 
+
 class TalkingClockApp(QWidget):
     def __init__(self):
         super().__init__()
-        local_timezone = time.tzname[0]
-        self.timezone = pytz.timezone(local_timezone)
+        self.timezone = pytz.timezone(get_localzone_name())
         self.format_24hr = False
         self.init_ui()
+
         timer = QTimer(self)
         timer.timeout.connect(self.show_time)
         timer.start(1000)
         self.show_time()
+
         # 日期定时器 date timer
         self.date_timer = QTimer(self)
         self.date_timer.timeout.connect(self.update_date)
-        self.date_timer.start(86400000)  # 每天更新一次 
+        self.date_timer.start(86400000)  # 每天更新一次
 
         self.calendar_mini = QCalendarWidget(self)
         self.calendar_mini.setVisible(False)  # 初始时隐藏日历
 
     def init_ui(self):
         layout = QGridLayout(self)
+        self.setWindowTitle('Talking Clock')
+        self.setFixedSize(600, 600)
 
         # 日期标签 date label
         self.date_label = QLabel(self)
@@ -58,12 +64,8 @@ class TalkingClockApp(QWidget):
         self.date_label.setGeometry(180, 320, 250, 60)  # 你可以根据需要调整位置和大小
         self.update_date()
 
-        # 在这里创建 ClockWidget 的实例并将其添加到布局中  create an instance of ClockWidget and add it to the layout
         self.clock_widget = ClockWidget(self)
         layout.addWidget(self.clock_widget, 0, 0, 1, 3)
-        # 设置窗口标题和大小 set window title and size
-        self.setWindowTitle('Talking Clock')
-        self.setGeometry(100, 100, 600, 600)
 
         # 电子时钟标签 electronic clock label
         self.label = QLabel(self)
@@ -71,24 +73,20 @@ class TalkingClockApp(QWidget):
         self.label.setStyleSheet("QLabel { font-size: 40px; }")
         self.label.setGeometry(150, 380, 300, 50)  # 设置电子时钟的位置和大小 set position and size of electronic clock
 
-        # English button
         self.play_button = QPushButton('English', self)
-        self.play_button.setGeometry(250, 430, 100, 30)  # 设置按钮的位置和大小 set position and size of button
+        self.play_button.setGeometry(250, 430, 100, 30)
         self.play_button.clicked.connect(self.play_time_en)
 
-        # Chinese button
         self.play_button_zh = QPushButton('中文', self)
-        self.play_button_zh.setGeometry(250, 470, 100, 30)  # 设置按钮的位置和大小  set position and size of button
+        self.play_button_zh.setGeometry(250, 470, 100, 30)
         self.play_button_zh.clicked.connect(self.play_time_zh)
 
-        # Russian button
         self.play_button_ru = QPushButton('Русский', self)
-        self.play_button_ru.setGeometry(250, 510, 100, 30)  # 设置按钮的位置和大小 set position and size of button
+        self.play_button_ru.setGeometry(250, 510, 100, 30)
         self.play_button_ru.clicked.connect(self.play_time_ru)
 
-        # Dutch button
         self.play_button_nl = QPushButton('Nederlands', self)
-        self.play_button_nl.setGeometry(250, 550, 100, 30)  # 设置按钮的位置和大小 set position and size of button
+        self.play_button_nl.setGeometry(250, 550, 100, 30)
         self.play_button_nl.clicked.connect(self.play_time_nl)
 
         # Theme button
@@ -98,58 +96,33 @@ class TalkingClockApp(QWidget):
 
         # Timezone combo box
         self.timezone_combo = CustomComboBox(self)
-        self.timezone_combo.addItem("Select Other Timezone")
         self.timezone_combo.addItem("UTC")
-        self.timezone_combo.addItem("America/New_York")  
-        self.timezone_combo.addItem("Europe/Amsterdam")  
+        self.timezone_combo.addItem("America/New_York")
+        self.timezone_combo.addItem("Europe/Amsterdam")
         self.timezone_combo.addItem("Europe/London")
-        self.timezone_combo.addItem("Asia/Shanghai")  # Beijing same as Shanghai
         self.timezone_combo.addItem("Europe/Moscow")
+        self.timezone_combo.addItem("Asia/Shanghai")
         self.timezone_combo.setGeometry(10, 10, 190, 30)
         self.timezone_combo.currentIndexChanged.connect(self.update_timezone)
 
-        # 24 hour format checkbox
+        # 24-hour format checkbox
         self.format_checkbox = QCheckBox('24 Hour Format', self)
-        self.format_checkbox.setGeometry(20, 560, 200, 30)  # 设置复选框的位置和大小  set position and size of checkbox
+        self.format_checkbox.setGeometry(20, 560, 200, 30)
         self.format_checkbox.stateChanged.connect(self.update_format)
 
         # Set Alarm button
         self.alarm_button = QPushButton('Set Alarm', self)
-        self.alarm_button.setGeometry(480, 10, 100, 30)  # 设置按钮的位置和大小 set position and size of button
+        self.alarm_button.setGeometry(480, 10, 100, 30)
         self.alarm_button.clicked.connect(self.show_alarm_window)
-        
+
         # Full Calendar button
         self.toggle_calendar_button = QPushButton('Calendar', self)
         self.toggle_calendar_button.setGeometry(480, 50, 100, 30)
         self.toggle_calendar_button.clicked.connect(self.toggle_calendar)
-        
-        self.setStyleSheet("""
-            QWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                            stop:0 #fbc2eb, stop:1 #a6c1ee);
-            }
-            QPushButton {
-                border: 2px solid #8f8f91;
-                border-radius: 10px;
-                background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                                  stop: 0 #f6f7fa, stop: 1 #dadbde);
-            }
-            QPushButton:pressed {
-                background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                                  stop: 0 #dadbde, stop: 1 #f6f7fa);
-            }
-            QLabel, QComboBox, QCheckBox {
-                background: transparent;
-                border: none;
-            }
-            QLabel {
-                font-family: 'PixelArmy';
-                font-size: 40px;
-            }
-            QComboBox QAbstractItemView {
-                background-color: #e2ebf0;
-            }
-        """)
+
+        with open("clock.stylesheet", "r") as fh:
+            self.setStyleSheet(fh.read())
+
     def open_full_calendar(self):
         self.calendar_window = CalendarWindow()
         self.calendar_window.show()
@@ -159,38 +132,52 @@ class TalkingClockApp(QWidget):
         self.date_label.setText(current_date.toString("yyyy-MM-dd dddd"))
 
     def show_time(self):
-        selected_timezone = self.timezone_combo.currentText()
-        if selected_timezone == 'Select Other Timezone':
-            current_time = datetime.now(tz.tzlocal())
-        else:
-            timezone = pytz.timezone(selected_timezone)
-            current_time = datetime.now(timezone)
-        time_format = '%I:%M:%S %p' if not self.format_24hr else '%H:%M:%S'
+        timezone = pytz.timezone(self.timezone_combo.currentText())
+        current_time = datetime.now(timezone)
+
+        time_format = '%I:%M %p' if not self.format_24hr else '%H:%M'
         time_text = current_time.strftime(time_format)
         self.label.setText(time_text)
 
     def play_time(self, lang='en'):
-        selected_timezone = self.timezone_combo.currentText()
-        if selected_timezone == 'Select Other Timezone':
-            current_time = datetime.now(tz.tzlocal())
-        else:
-            timezone = pytz.timezone(selected_timezone)
-            current_time = datetime.now(timezone)
+        timezone = pytz.timezone(self.timezone_combo.currentText())
+        current_time = datetime.now(timezone)
+
         time_text = current_time.strftime('%I:%M %p' if not self.format_24hr else '%H:%M')
 
-        if lang == 'zh':
-            prefix = "现在时间是"
-        elif lang == 'ru':
-            prefix = "Текущее время"
-        elif lang == 'nl':
-            prefix = "De huidige tijd is"
+        if lang == 'ru':
+            current_time = current_time.strftime("%H:%M")
+            hours, minutes = current_time.split(':')
+            result = ['current_time.wav']
+            result.extend(ru_convert(int(hours), 'h'))
+            result.extend(ru_convert(int(minutes), 'm'))
+            combined_audio = AudioSegment.empty()
+
+            for file_path in result:
+                audio_segment = AudioSegment.from_file('Russian/' + file_path)
+                combined_audio += audio_segment
+
+            combined_audio.export("current_time.wav", format="wav")
+            pygame.init()
+            pygame.mixer.music.load("current_time.wav")
+            pygame.mixer.music.play()
+            pygame.mixer.music.play()
+            pygame.time.wait(int(combined_audio.duration_seconds * 1000))
+            pygame.quit()
+            os.remove("current_time.wav")
+
+
         else:
-            prefix = "The current time is"
-        text_to_speak = f"{prefix} {time_text}"
-        tts = gTTS(text=text_to_speak, lang=lang)
-        tts.save("time.mp3")
-        playsound("time.mp3")
-        os.remove("time.mp3")
+            prefixes = {'zh': '现在时间是',
+                        'nl': 'De huidige tijd is',
+                        'en': 'The current time is'}
+
+            text_to_speak = f"{prefixes[lang]} {time_text}"
+            tts = gTTS(text=text_to_speak, lang=lang)
+
+            tts.save("time.mp3")
+            playsound("time.mp3")
+            os.remove("time.mp3")
 
     def play_time_en(self):
         self.play_time('en')
@@ -204,24 +191,13 @@ class TalkingClockApp(QWidget):
     def play_time_nl(self):
         self.play_time('nl')
 
-    def update_timezone(self):
-        selected_timezone = self.timezone_combo.currentText()
-        if selected_timezone == 'Select Other Timezone':
-            self.timezone = tz.tzlocal()
-        else:
-            self.timezone = pytz.timezone(selected_timezone)
-
     def update_format(self):
         self.format_24hr = self.format_checkbox.isChecked()
 
     def update_timezone(self):
-        selected_timezone = self.timezone_combo.currentText()
-        if selected_timezone == 'Select Other Timezone':
-            self.timezone = tz.tzlocal()
-        else:
-            self.timezone = pytz.timezone(selected_timezone)
+        self.timezone = pytz.timezone(self.timezone_combo.currentText())
         self.clock_widget.set_timezone(self.timezone)  # 更新钟表表盘的时区 update timezone of clock face
-    
+
     # change clock face which related the 'Theme' button
     def change_clock_face(self):
         options = QFileDialog.Option
@@ -230,14 +206,14 @@ class TalkingClockApp(QWidget):
         file_name, _ = file_dialog.getOpenFileName(self, "Select Clock Face Image", "",
                                                    "Images (*.png *.jpg *.jpeg *.bmp);;All Files (*)",
                                                    options=QFileDialog.Option)
-    
+
         if file_name:
             self.clock_widget.set_clock_face(file_name)
 
     def show_alarm_window(self):
         self.alarm_window = AlarmWindow(self)
         self.alarm_window.show()
-        
+
     # 显示或隐藏日历 show or hide calendar
     def toggle_calendar(self):
         if self.calendar_mini.isVisible():
@@ -247,6 +223,7 @@ class TalkingClockApp(QWidget):
             self.calendar_mini.setStyleSheet('background-color: yellow')
             self.calendar_mini.setVisible(True)
             self.toggle_calendar_button.setText('hide calendar')
+
 
 class ClockWidget(QWidget):
     def __init__(self, parent=None):
@@ -318,7 +295,7 @@ class ClockWidget(QWidget):
         painter.setPen(QPen(QColor(50, 50, 50), 6))
         painter.setBrush(QColor(50, 50, 50))
         painter.rotate(hrs * (360 / 12))
-        painter.drawRect(-5, int (-clock_radius / 2), 10, int(clock_radius / 2))  # 使用矩形作为时针
+        painter.drawRect(-5, int(-clock_radius / 2), 10, int(clock_radius / 2))  # 使用矩形作为时针
         painter.rotate(-hrs * (360 / 12))
 
         # 绘制分针 draw minute hand
@@ -334,7 +311,9 @@ class ClockWidget(QWidget):
         painter.rotate(-secs * (360 / 60))
 
         painter.restore()
-#setting alarm
+
+
+# setting alarm
 class AlarmWindow(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -389,15 +368,14 @@ class AlarmWindow(QWidget):
         finally:
             timer.stop()
 
+
 class CalendarWindow(QWidget):
     def __init__(self):
         super().__init__()
-
         self.init_ui()
 
     def init_ui(self):
         self.layout = QVBoxLayout(self)
-
         self.calendar = QCalendarWidget(self)
         # self.calendar.setStyleSheet('background-image: url(你的图片路径); background-repeat: no-repeat; background-position: center')
 
