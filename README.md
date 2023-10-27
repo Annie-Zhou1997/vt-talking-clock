@@ -46,6 +46,10 @@ Im Folgenden sind die für die Ausführung dieses Codes benötigten Bibliotheken
     ```bash
     pip install python-dateutil
     ```
+- **tzlocal**:
+    ```bash
+    pip install tzlocal
+    ```
 
 ## Fuctions
 
