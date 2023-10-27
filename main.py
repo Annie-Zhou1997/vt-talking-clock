@@ -18,6 +18,7 @@ from datetime import datetime
 from dateutil import tz
 from playsound import playsound
 from Russian import *
+from Chinese import *
 
 
 class CustomComboBox(QComboBox):
@@ -165,11 +166,32 @@ class TalkingClockApp(QWidget):
             pygame.time.wait(int(combined_audio.duration_seconds * 1000))
             pygame.quit()
             os.remove("current_time.wav")
+        elif lang == 'zh':
+            current_time = current_time.strftime("%H:%M")
+            hours, minutes = current_time.split(':')
+            result_ch = ['current_time.wav']
+            result_ch.extend(ch_convert(int(hours)))
+            result_ch.extend(['point.wav'])
+            result_ch.extend(ch_convert(int(minutes)))
+            result_ch.extend(['minute.wav'])
+            combined_audio = AudioSegment.empty()
 
+            for file_path in result_ch:
+                audio_segment = AudioSegment.from_file('Chinese/' + file_path)
+                combined_audio += audio_segment
 
+            combined_audio.export("current_time.wav", format="wav")
+            pygame.init()
+            pygame.mixer.music.load("current_time.wav")
+            pygame.mixer.music.play()
+            pygame.mixer.music.play()
+            pygame.time.wait(int(combined_audio.duration_seconds * 1000))
+            pygame.quit()
+            os.remove("current_time.wav")
+
+        #'zh': '现在时间是',
         else:
-            prefixes = {'zh': '现在时间是',
-                        'nl': 'De huidige tijd is',
+            prefixes = {'nl': 'De huidige tijd is',
                         'en': 'The current time is'}
 
             text_to_speak = f"{prefixes[lang]} {time_text}"
