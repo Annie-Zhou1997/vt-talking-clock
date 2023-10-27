@@ -19,6 +19,7 @@ from dateutil import tz
 from playsound import playsound
 from Russian import *
 from Chinese import *
+from English import *
 
 
 class CustomComboBox(QComboBox):
@@ -143,56 +144,55 @@ class TalkingClockApp(QWidget):
     def play_time(self, lang='en'):
         timezone = pytz.timezone(self.timezone_combo.currentText())
         current_time = datetime.now(timezone)
-
         time_text = current_time.strftime('%I:%M %p' if not self.format_24hr else '%H:%M')
+        current_time = current_time.strftime("%H:%M")
+        hours, minutes = current_time.split(':')
+        result_audio = AudioSegment.empty()
+        if lang in ['ru', 'zh', 'en']:
+            if lang == 'ru':
+                hours_audio = ru_convert(int(hours), 'h')
+                minutes_audio = ru_convert(int(minutes), 'm')
+                audio_files = ['current_time.wav'] + hours_audio + minutes_audio
 
-        if lang == 'ru':
-            current_time = current_time.strftime("%H:%M")
-            hours, minutes = current_time.split(':')
-            result = ['current_time.wav']
-            result.extend(ru_convert(int(hours), 'h'))
-            result.extend(ru_convert(int(minutes), 'm'))
-            combined_audio = AudioSegment.empty()
+                for file_path in audio_files:
+                    audio_segment = AudioSegment.from_file('Russian/' + file_path)
+                    result_audio += audio_segment
 
-            for file_path in result:
-                audio_segment = AudioSegment.from_file('Russian/' + file_path)
-                combined_audio += audio_segment
+            elif lang == 'zh':
+                hours_audio = ch_convert(int(hours))
+                minutes_audio = ch_convert(int(minutes))
+                audio_files = ['current_time.wav'] + hours_audio + ['point.wav'] + minutes_audio + ['minute.wav']
 
-            combined_audio.export("current_time.wav", format="wav")
+                for file_path in audio_files:
+                    audio_segment = AudioSegment.from_file('Chinese/' + file_path)
+                    result_audio += audio_segment
+
+            elif lang == 'en':
+                result_en = ['current_time.wav']
+                if int(hours) <= 12:
+                    hours_audio = en_convert(int(hours))
+                    time_suffix = ['en_AM.WAV']
+                else:
+                    hours_audio = en_convert(int(hours) - 12)
+                    time_suffix = ['en_PM.WAV']
+                minutes_audio = en_convert(int(minutes))
+                audio_files = ['current_time.wav'] + hours_audio + minutes_audio + time_suffix
+
+                for file_path in audio_files:
+                    audio_segment = AudioSegment.from_file('English/' + file_path)
+                    result_audio += audio_segment
+
+            result_audio.export("current_time.wav", format="wav")
             pygame.init()
             pygame.mixer.music.load("current_time.wav")
             pygame.mixer.music.play()
             pygame.mixer.music.play()
-            pygame.time.wait(int(combined_audio.duration_seconds * 1000))
-            pygame.quit()
-            os.remove("current_time.wav")
-        elif lang == 'zh':
-            current_time = current_time.strftime("%H:%M")
-            hours, minutes = current_time.split(':')
-            result_ch = ['current_time.wav']
-            result_ch.extend(ch_convert(int(hours)))
-            result_ch.extend(['point.wav'])
-            result_ch.extend(ch_convert(int(minutes)))
-            result_ch.extend(['minute.wav'])
-            combined_audio = AudioSegment.empty()
-
-            for file_path in result_ch:
-                audio_segment = AudioSegment.from_file('Chinese/' + file_path)
-                combined_audio += audio_segment
-
-            combined_audio.export("current_time.wav", format="wav")
-            pygame.init()
-            pygame.mixer.music.load("current_time.wav")
-            pygame.mixer.music.play()
-            pygame.mixer.music.play()
-            pygame.time.wait(int(combined_audio.duration_seconds * 1000))
+            pygame.time.wait(int(result_audio.duration_seconds * 1000))
             pygame.quit()
             os.remove("current_time.wav")
 
-        #'zh': '现在时间是',
         else:
-            prefixes = {'nl': 'De huidige tijd is',
-                        'en': 'The current time is'}
+            prefixes = {'nl': 'De huidige tijd is'}
 
             text_to_speak = f"{prefixes[lang]} {time_text}"
             tts = gTTS(text=text_to_speak, lang=lang)
@@ -331,7 +331,6 @@ class ClockWidget(QWidget):
         painter.rotate(secs * (360 / 60))
         painter.drawLine(0, 0, 0, round(-clock_radius * 0.9))
         painter.rotate(-secs * (360 / 60))
-
         painter.restore()
 
 
