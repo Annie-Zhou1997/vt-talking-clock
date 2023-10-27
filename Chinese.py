@@ -6,9 +6,6 @@ def ch_convert(number):
              6:  'six.wav',      7:  'seven.wav',    8:  'eight.wav',
              9:  'nine.wav',     10: 'ten.wav'}
 
-    # words = {'h': 'hour.wav',
-    #          'm': 'minute.wav'}
-
     result_ch = []
     if number <= 10:
         result_ch.append(files[number])
