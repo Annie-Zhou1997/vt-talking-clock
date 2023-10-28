@@ -150,19 +150,38 @@ class TalkingClockApp(QWidget):
                     result_audio += audio_segment
 
             elif lang == 'en':
-                if int(hours) <= 12:
-                    hours_audio = en_convert(int(hours))
-                    time_suffix = ['en_AM.WAV']
-                else:
-                    hours_audio = en_convert(int(hours) - 12)
+                hour = int(hours)
+                minute = int(minutes)
+                if hour >= 12:
                     time_suffix = ['en_PM.WAV']
-                minutes_audio = en_convert(int(minutes))
-                audio_files = ['current_time.wav'] + hours_audio + minutes_audio + time_suffix
+                    if hour > 12:
+                        hour -= 12
+                else:
+                    time_suffix = ['en_AM.WAV']
+                    if hour == 0:
+                        hour = 12
 
+                if minute == 0:
+                    audio_files = ['current_time.wav'] + en_convert(hour) + ['en_o_clock.WAV'] + time_suffix
+                elif minute == 15:
+                    audio_files = ['current_time.wav'] + ['en_quarter_past.WAV'] + en_convert(hour) + time_suffix
+                elif minute == 30:
+                    audio_files = ['current_time.wav'] + ['en_half_past.WAV'] + en_convert(hour) + time_suffix
+                elif minute == 45:
+                    audio_files = ['current_time.wav'] + ['en_quarter_to.WAV'] + en_convert(1 if hour == 12 else hour + 1) + time_suffix
+                else:
+                    minutes_audio = en_convert(minute)
+                    audio_files = ['current_time.wav'] + en_convert(hour) + minutes_audio + time_suffix
+                
                 for file_path in audio_files:
-                    audio_segment = AudioSegment.from_file('English/' + file_path)
-                    result_audio += audio_segment
-
+                    if isinstance(file_path, list):
+                        for fp in file_path:
+                            audio_segment = AudioSegment.from_file('English/' + fp)
+                            result_audio += audio_segment
+                    else:
+                        audio_segment = AudioSegment.from_file('English/' + file_path)
+                        result_audio += audio_segment
+           
             result_audio.export("current_time.wav", format="wav")
             pygame.init()
             pygame.mixer.music.load("current_time.wav")
@@ -263,15 +282,15 @@ class ClockWidget(QWidget):
             x = clock_radius * math.cos(math.radians(angle))
             y = -clock_radius * math.sin(math.radians(angle))
 
-            # 创建 QPoint 对象
+            # 创建 QPoint 对象 create QPoint object
             text_x = int(x * 0.8)  # 调整数字的水平位置
             text_y = int(y * 0.8)  # 调整数字的垂直位置
             text_position = QPoint(text_x, text_y)
 
-            # 绘制数字
+            # 绘制数字 draw number
             painter.drawText(text_position, str(i + 1))
 
-            # 绘制刻度
+            # 绘制刻度 draw scale
             line_x = int(clock_radius * 0.9 * math.cos(math.radians(angle)))
             line_y = int(-clock_radius * 0.9 * math.sin(math.radians(angle)))
             painter.setPen(QPen(QColor(0, 0, 0), 2))
