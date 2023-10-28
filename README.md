@@ -57,7 +57,9 @@ Alarm function
 ## Russian 
 Russian 
 ## Chinese 
-Chinese 
+In Chinese, the format of telling time is:
+```"The current time is" + hour +
+```
 
 # GDPR Compliance
 
