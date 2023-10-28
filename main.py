@@ -58,7 +58,7 @@ class TalkingClockApp(QWidget):
         self.date_label = QLabel(self)
         self.date_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.date_label.setStyleSheet("QLabel { font-size: 30px; }")
-        self.date_label.setGeometry(180, 320, 250, 60)  # 你可以根据需要调整位置和大小
+        self.date_label.setGeometry(160, 320, 290, 60)  # 你可以根据需要调整位置和大小
         self.update_date()
 
         self.clock_widget = ClockWidget(self)
@@ -152,14 +152,9 @@ class TalkingClockApp(QWidget):
             elif lang == 'en':
                 hour = int(hours)
                 minute = int(minutes)
-                if hour >= 12:
-                    time_suffix = ['en_PM.WAV']
-                    if hour > 12:
-                        hour -= 12
-                else:
-                    time_suffix = ['en_AM.WAV']
-                    if hour == 0:
-                        hour = 12
+                time_suffix = ['en_PM.WAV'] if hour >= 12 else ['en_AM.WAV']
+                if hour > 12:
+                    hour -= 12
 
                 if minute == 0:
                     audio_files = ['current_time.wav'] + en_convert(hour) + ['en_o_clock.WAV'] + time_suffix
@@ -168,11 +163,12 @@ class TalkingClockApp(QWidget):
                 elif minute == 30:
                     audio_files = ['current_time.wav'] + ['en_half_past.WAV'] + en_convert(hour) + time_suffix
                 elif minute == 45:
-                    audio_files = ['current_time.wav'] + ['en_quarter_to.WAV'] + en_convert(1 if hour == 12 else hour + 1) + time_suffix
+                    audio_files = ['current_time.wav'] + ['en_quarter_to.WAV'] + en_convert(
+                        1 if hour == 12 else hour + 1) + time_suffix
                 else:
                     minutes_audio = en_convert(minute)
                     audio_files = ['current_time.wav'] + en_convert(hour) + minutes_audio + time_suffix
-                
+
                 for file_path in audio_files:
                     if isinstance(file_path, list):
                         for fp in file_path:
@@ -192,8 +188,8 @@ class TalkingClockApp(QWidget):
 
         else:
             prefixes = {'nl': 'De huidige tijd is'}
-
-            time_text = current_time.strftime('%I:%M %p' if not self.format_24hr else '%H:%M')
+            cur_time =  datetime.now(timezone)
+            time_text = cur_time.strftime('%I:%M %p' if not self.format_24hr else '%H:%M')
             text_to_speak = f"{prefixes[lang]} {time_text}"
             tts = gTTS(text=text_to_speak, lang=lang)
 
