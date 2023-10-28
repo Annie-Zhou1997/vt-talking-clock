@@ -1,26 +1,22 @@
-
-            QWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                            stop:0 #fbc2eb, stop:1 #a6c1ee);
-            }
-            QPushButton {
-                border: 2px solid #8f8f91;
-                border-radius: 10px;
-                background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                                  stop: 0 #f6f7fa, stop: 1 #dadbde);
-            }
-            QPushButton:pressed {
-                background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                                  stop: 0 #dadbde, stop: 1 #f6f7fa);
-            }
-            QLabel, QComboBox, QCheckBox {
-                background: transparent;
-                border: none;
-            }
-            QLabel {
-                font-family: 'PixelArmy';
-                font-size: 40px;
-            }
-            QComboBox QAbstractItemView {
-                background-color: #e2ebf0;
-            }
+ QWidget {
+     background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #fbc2eb, stop:1 #a6c1ee);
+}
+ QPushButton {
+     border: 2px solid #8f8f91;
+     border-radius: 10px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+}
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa);
+}
+ QLabel, QComboBox, QCheckBox {
+     background: transparent;
+     border: none;
+}
+ QLabel {
+     font-family: 'digital-7';
+     font-size: 60px;
+}
+ QComboBox QAbstractItemView {
+     background-color: #e2ebf0;
+}
