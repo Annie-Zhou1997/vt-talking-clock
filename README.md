@@ -1,30 +1,25 @@
-# vt-talking-clock
-
+# Vt-talking-clock :diamond_shape_with_a_dot_inside:
+## Project description
 This is the README for our group project.
-
+## Requirements before installing
+python
+## Installation
+123
 ## Supported Languages
-The supported languages for this project are:
-- English
-- Dutch
-- Russian
-- Chinese
+- English :globe_with_meridians:
+- Dutch :netherlands:
+- Russian :ru:
+- Chinese (Mandarin) :cn:
+## Fuctions
+Time zone selection
 
-## Group Members
-Here are the members of our group:
+Theme control
+- change the face of clock when click the 'Theme' button
 
-1. Igor Marchenko
-2. Wangyiyao (Annie) Zhou
-3. Yanpei (Page) Ouyang
-4. Youyang Cai
-5. Yi Lei
-
-# Required Libraries
-
-以下是运行此代码所需的库和安装命令：
-
-Ниже перечислены библиотеки, необходимые для запуска этого кода, и команды для их установки
-
-Im Folgenden sind die für die Ausführung dieses Codes benötigten Bibliotheken und die Befehle für ihre Installation aufgeführt
+## Usage
+123
+Alarm function
+### Required Libraries
 
 - **PyQt6**:
     ```bash
@@ -50,16 +45,20 @@ Im Folgenden sind die für die Ausführung dieses Codes benötigten Bibliotheken
     ```bash
     pip install tzlocal
     ```
+## Group Members
+- Igor Marchenko
+- Wangyiyao (Annie) Zhou
+- Yanpei (Page) Ouyang
+- Youyang Cai
+- Yi Lei
+   
+# Linguistic rules for telling time
 
-## Fuctions
+## Russian 
+Russian 
+## Chinese 
+Chinese 
 
-Time zone map
+# GDPR Compliance
 
-Voice control 
--make it listen to us when the alarm is on, and if it recognises our “shut up”, the alarm goes off
-
-Theme control
--change the face of clock when click the 'Theme' button
-
-Alarm function
--set time based on your preference and add snooze function
+The recordings in this project are provided by members of our team. The voice for Chinese is from Youyang Cai, for Russian, it's Igor Marchenko, and for English, it's Annie Zhou. Dutch speech synthesis was generated using Google's [gTTS](https://gtts.readthedocs.io/en/latest/license.html). Therefore, the clock data in this project complies with GDPR regulations.
