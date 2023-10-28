@@ -130,7 +130,6 @@ class TalkingClockApp(QWidget):
         timezone = pytz.timezone(self.timezone_combo.currentText())
         current_time = datetime.now(timezone).strftime("%H:%M")
         hours, minutes = current_time.split(':')
-
         result_audio = AudioSegment.empty()
         if lang in ['ru', 'zh', 'en']:
             if lang == 'ru':
@@ -141,9 +140,15 @@ class TalkingClockApp(QWidget):
                     result_audio += audio_segment
 
             elif lang == 'zh':
-                hours_audio = ch_convert(int(hours))
-                minutes_audio = ch_convert(int(minutes))
-                audio_files = ['current_time.wav'] + hours_audio + ['point.wav'] + minutes_audio + ['minute.wav']
+                hour = int(hours)
+                minute = int(minutes)
+                audio_files = ['current_time.wav'] + ch_convert(hour) + ['point.wav']
+                if minute == 0:
+                    audio_files += ['o_clock.wav']
+                elif minute == 30:
+                    audio_files += ['half.wav']
+                else:
+                    audio_files += ch_convert(minute) + ['minute.wav']
 
                 for file_path in audio_files:
                     audio_segment = AudioSegment.from_file('Chinese/' + file_path)
