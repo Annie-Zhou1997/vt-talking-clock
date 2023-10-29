@@ -1,10 +1,9 @@
-# Vt-talking-clock :diamond_shape_with_a_dot_inside:
+# Vt-Talking-Clock :diamond_shape_with_a_dot_inside:
 ## Project description
-This project is about making a special clock that can talk and tell the time in English, Dutch, Russian, and Chinese, 
-so people who speak these languages can easily understand what time it is.
+This project aims to create a special clock that can verbally announce the time in English, Dutch, Russian, and Chinese, enabling speakers of these languages to easily comprehend the current time.
 
 ## Requirements before installing
-Our clock uses PyQt6 for the interface, pydub for creating audio and PyGame for playing audio. All other requirements are provided in requirements.txt
+Our clock uses PyQt6 for the interface, pydub for creating audio and PyGame for playing audio. All other requirements are provided in requirements.txt.
 
 ## Supported Languages
 - English :globe_with_meridians:
