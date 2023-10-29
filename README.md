@@ -145,4 +145,4 @@ To distinguish between morning and afternoon/evening, we use "AM" for times from
   
 # GDPR Compliance
 
-The recordings in this project are provided by members of our team. The voice for Chinese is from Youyang Cai, for Russian, it's Igor Marchenko, and for English, it's Annie Zhou. Dutch speech synthesis was generated using Google's [gTTS](https://gtts.readthedocs.io/en/latest/license.html). Therefore, the clock data in this project complies with GDPR regulations.
+The recordings in this project are provided exclusively by members of our team. The voice for Chinese is from Youyang Cai, for Russian is from Igor Marchenko, and for English, it's Annie Zhou. Dutch speech synthesis was generated using Google's [gTTS](https://gtts.readthedocs.io/en/latest/license.html). Therefore, the clock data in this project complies with GDPR regulations.
