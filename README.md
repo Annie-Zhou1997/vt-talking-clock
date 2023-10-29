@@ -56,12 +56,7 @@ Theme control
 ## Russian :ru:
 In the Russian language, when talking about time, we have particular ways of handling minutes. 
 
-If the number of minutes isn't a multiple of five, we simply state the hours and minutes in the 24-hour format:
-**15:55** `Пятнадцать часов пятьдесят пять минут`
-
-Additionally, since there is declension in Russian, if it's one hour or one minute, we use the singular nominative form, like 'одна *минута*' meaning 'one minute':
-**19:01** `Девятнадцать часов одна минута`. However, when it's two, three, or four hours or minutes, we use the so-called count form, like 'две *минуты*' for 'two minutes'
-**19:02** `Девятнадцать часов две минуты`.
+If the number of minutes isn't a multiple of five, we simply state the hours and minutes in the 24-hour format. Additionally, since there is declension in Russian, if it's one hour or one minute, we use the singular nominative form, like 'одна *минута*' meaning 'one minute': **19:01** `Девятнадцать часов одна минута`. However, when it's two, three, or four hours or minutes, we use the so-called count form, like 'две *минуты*' for 'two minutes': **19:02** `Девятнадцать часов две минуты`.
 
 Furthermore, because Russian has gender distinction, 'hour' is masculine, and 'minute' is feminine, which affects how we say one and two: '*два* часа,' but '*две* минуты’. 
 
