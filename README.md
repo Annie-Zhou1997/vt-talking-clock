@@ -56,7 +56,7 @@ Theme control
 Russian 
 ## 汉语时间表达规则 (Chinese Mandarin Time Expression) :cn:
 In Chinese, the formant of telling time is:
-``"The current time is" + hour + "point" + minutes/"half"/"o'clock" + 'minutes'(or not)
+``"The current time is" + hour + "point" + minutes/"half"/"o'clock" + 'minutes'(or not)``
 ### 整点报时 (On the Hour)
 当分钟为 `00` 时，我们直接说小时。
 
