@@ -108,6 +108,8 @@ These are some basic ways and usages of telling time in Chinese. Habits may vary
 :high_brightness:However, in our project, we have not adopted overly complex Chinese time expressions. After the millennium, native Chinese speakers rarely say "一刻"(Quarter) in Mandarin.
 
 ## English Time Expressions :globe_with_meridians:
+In English, the formant of telling time is:   
+``"The current time is" + hour +  minutes + AM/PM``
 ### On the Hour
 When the minutes are `00`, we use the phrase "o'clock". 
 
