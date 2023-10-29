@@ -33,7 +33,7 @@ def ru_convert(time):
              'without': 'without.wav'}
 
     result = []
-    if mins == 30:  # half h+1.adj.gen
+    if mins == 30:  # half hour+1.adj.gen
         result.extend([words['half'], files[hours_pm+1]['adj_gen']])
     elif mins in (5, 10, 15, 20):  # n.nom min.gen.pl hour+1.adj.gen
         result.extend([files[mins]['nom'], words['m']['pl'], files[hours_pm+1]['adj_gen']])
@@ -42,7 +42,7 @@ def ru_convert(time):
     else:
         for mode, number in {'h': hours, 'm': mins}.items():
             if number == 0:
-                result.append(files[0])
+                result.append(files[0]['nom'])
                 result.append(words[mode]['pl'])
             else:
                 decimals, remainder = divmod(number, 10)
