@@ -109,7 +109,7 @@ These are some basic ways and usages of telling time in Chinese. Habits may vary
 
 ## English Time Expressions :globe_with_meridians:
 In English, the formant of telling time is:   
-``"The current time is" + hour +  minutes + AM/PM``
+``"The current time is" + hour +  minutes + "AM/PM"``
 ### On the Hour
 When the minutes are `00`, we use the phrase "o'clock". 
 
