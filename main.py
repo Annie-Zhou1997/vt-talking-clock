@@ -84,7 +84,6 @@ class TalkingClockApp(QWidget):
         self.timezone_combo.addItem("Asia/Shanghai")
         self.timezone_combo.addItem("UTC")
         self.timezone_combo.addItem("MST")
-        self.timezone_combo.addItem("IST")
 
         self.timezone_combo.setGeometry(10, 10, 190, 30)
         self.timezone_combo.currentIndexChanged.connect(self.update_timezone)
