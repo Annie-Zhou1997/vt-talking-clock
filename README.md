@@ -60,17 +60,13 @@ If the number of minutes isn't a multiple of five, we simply state the hours and
 
 Furthermore, because Russian has gender distinction, 'hour' is masculine, and 'minute' is feminine, which affects how we say one and two: '*два* часа,' but '*две* минуты’. 
 
-If it's five or more hours or minutes, we switch to the plural genitive form, like 'семь минут' for 'seven minutes':
-**19:07** `Девятнадцать часов семь минут`
+If it's five or more hours or minutes, we switch to the plural genitive form, like 'семь минут' for 'seven minutes': **19:07** `Девятнадцать часов семь минут`.
 
-When the number of minutes is divisible by five (excluding 25 and 35), we use a 12-hour system. When the amount of minutes is thirty, we use the word "half" (половина), for example, 'half of the eighth’ stands for 19:30:
-**19:30** `Половина восьмого` or `Девятнадцать часов тридцать минут`
+When the number of minutes is divisible by five (excluding 25 and 35), we use a 12-hour system. When the amount of minutes is thirty, we use the word "half" (половина), for example, 'half of the eighth’ stands for 19:30: **19:30** `Половина восьмого` or `Девятнадцать часов тридцать минут`-
 
-When we have five, ten, fifteen, or twenty minutes, we use the word 'minutes' in the expression, like ‘five minutes of the eighth”:
-**19:05** `Пять минут восьмого` or `Девятнадцать часов пять минут`
+When we have five, ten, fifteen, or twenty minutes, we use the word 'minutes' in the expression, like ‘five minutes of the eighth”: **19:05** `Пять минут восьмого` or `Девятнадцать часов пять минут`
 
-For cases like 40, 45, 50, or 55 minutes, we use the word "without" (без) followed by the remaining minutes until the next hour. For example, for 19:55, we would say ‘eight without five:
-**19:55** `Без пяти восемь` or `Девятнадцать часов пятьдесят пять минут`
+For cases like 40, 45, 50, or 55 minutes, we use the word "without" (без) followed by the remaining minutes until the next hour. For example, for 19:55, we would say ‘eight without five: **19:55** `Без пяти восемь` or `Девятнадцать часов пятьдесят пять минут`
 
 ## 汉语时间表达规则 (Chinese Mandarin Time Expression) :cn:
 In Chinese, the formant of telling time is:   
