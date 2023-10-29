@@ -52,7 +52,7 @@ Theme control
 - Yanpei (Page) Ouyang
 - Yi Lei
    
-# Linguistic rules for telling time
+# Language rules for telling time
 ## Russian :ru:
 In the Russian language, when talking about time, we have particular ways of handling minutes. 
 
