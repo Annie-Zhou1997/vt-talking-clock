@@ -73,7 +73,6 @@ A quarter hour usually refers to a 15-minute period. We often use "一刻" (one 
 
 For times between `01` to `29` and `31` to `59` minutes, we usually say the specific number of minutes.
 
-- 3:05: "三点零五" 或 "三点五分" ("Three oh five" or "Three five")
 - 8:20: "八点二十分" ("Eight twenty")
 
 ### 上午和下午 (AM and PM)
