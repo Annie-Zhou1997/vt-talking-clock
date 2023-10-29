@@ -35,7 +35,7 @@ Furthermore, because Russian has gender distinction, 'hour' is masculine, and 'm
 
 If it's five or more hours or minutes, we switch to the plural genitive form, like 'семь минут' for 'seven minutes': **19:07** `Девятнадцать часов семь минут`.
 
-When the number of minutes is divisible by five (excluding 25 and 35), we use a 12-hour system. When the amount of minutes is thirty, we use the word "half" (половина), for example, 'half of the eighth’ stands for 19:30: **19:30** `Половина восьмого` or `Девятнадцать часов тридцать минут`-
+When the number of minutes is divisible by five (excluding 25 and 35), we use a 12-hour system. When the amount of minutes is thirty, we use the word "half" (половина), for example, 'half of the eighth’ stands for 19:30: **19:30** `Половина восьмого` or `Девятнадцать часов тридцать минут`.
 
 When we have five, ten, fifteen, or twenty minutes, we use the word 'minutes' in the expression, like ‘five minutes of the eighth”: **19:05** `Пять минут восьмого` or `Девятнадцать часов пять минут`
 
