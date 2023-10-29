@@ -31,26 +31,6 @@ class CustomComboBox(QComboBox):
         painter.drawComplexControl(QStyle.ComplexControl.CC_ComboBox, opt)
         painter.drawControl(QStyle.ControlElement.CE_ComboBoxLabel, opt)
 
- #Elder fridenly mode
-def increase_font_size(self):
-  current_font = self.font()
-  current_font.setPointSize(current_font.pointSize() + 2)
-  self.setFont(current_font)
-
-def make_font_bold(self):
-  current_font = self.font()
-  current_font.setBold(True)
-  self.setFont(current_font)
-
-# Increase Font Size button
-self.increase_font_button = QPushButton('Increase Font Size', self)
-self.increase_font_button.setGeometry(20, 590, 150, 30)
-self.increase_font_button.clicked.connect(self.increase_font_size)
-
-        # Make Font Bold button
-self.make_font_bold_button = QPushButton('Make Font Bold', self)
-self.make_font_bold_button.setGeometry(200, 590, 150, 30)
-self.make_font_bold_button.clicked.connect(self.make_font_bold)
 
 class TalkingClockApp(QWidget):
     def __init__(self):
@@ -94,7 +74,7 @@ class TalkingClockApp(QWidget):
         self.change_clock_face_button = QPushButton('Theme', self)
         self.change_clock_face_button.setGeometry(480, 10, 100, 30)
         self.change_clock_face_button.clicked.connect(self.change_clock_face)
-
+        
         # Timezone combo box
         self.timezone_combo = CustomComboBox(self)
         self.timezone_combo.addItem(str(self.timezone))
