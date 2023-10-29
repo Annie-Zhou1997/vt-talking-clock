@@ -11,7 +11,7 @@ Our clock uses PyQt6 for the interface, pydub for creating audio and PyGame for 
 - Dutch :netherlands:
 - Russian :ru:
 - Mandarin :cn:
-- 
+  
 ## Fuctions
 - Time zone selection
 - Theming control: change the face of clock and keep it even after the application is closed
