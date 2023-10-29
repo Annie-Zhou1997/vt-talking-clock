@@ -19,7 +19,7 @@ from Russian import *
 from Chinese import *
 from English import *
 
-
+# paint combo box
 class CustomComboBox(QComboBox):
     def paintEvent(self, event):
         painter = QStylePainter(self)
@@ -54,7 +54,7 @@ class TalkingClockApp(QWidget):
         self.setWindowIcon(QIcon('art.jpg'))
         self.setFixedSize(600, 600)
 
-        # 日期标签 date label
+        # date label
         self.date_label = QLabel(self)
         self.date_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.date_label.setStyleSheet("QLabel { font-size: 30px}")
@@ -64,7 +64,7 @@ class TalkingClockApp(QWidget):
         self.clock_widget = ClockWidget(self)
         layout.addWidget(self.clock_widget, 0, 0, 1, 3)
 
-        # 电子时钟标签 electronic clock label
+        # electronic clock label
         self.label = QLabel(self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet("QLabel { font-size: 50px; }")
@@ -295,7 +295,7 @@ class ClockWidget(QWidget):
             painter.setClipPath(clip_path)
             painter.drawPixmap(int(-clock_radius), int(-clock_radius), int(2 * clock_radius), int(2 * clock_radius), background_image)
 
-        # Draw the clock hands, ticks, and numbers
+        # This is for draw the clock hands, ticks, and numbers
         for i in range(12):
             angle = -(i + 10) * 30
             x = clock_radius * math.cos(math.radians(angle))
