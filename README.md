@@ -14,7 +14,7 @@ Our clock uses PyQt6 for the interface, pydub for creating audio and PyGame for 
 ## Functions
 - Time Zone Selection
 - Theming Control: change the face of clock and keep it even after the application is closed by saving the settings to config.ini
-- Voice Speed Switch
+- Voice Speed Control
 - 12/24 Format Switch
   
 ## Group Members
