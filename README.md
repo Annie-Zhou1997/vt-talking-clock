@@ -1,50 +1,23 @@
-
 # Vt-talking-clock :diamond_shape_with_a_dot_inside:
 ## Project description
-This is the README for our group project.
+This project is about making a special clock that can talk and tell the time in English, Dutch, Russian, and Chinese, 
+so people who speak these languages can easily understand what time it is.
+
 ## Requirements before installing
-python
-## Installation
-123
+Our clock uses PyQt6 for the interface, pydub for creating audio and PyGame for playing audio. All other requirements are provided in requirements.txt
+
 ## Supported Languages
 - English :globe_with_meridians:
 - Dutch :netherlands:
 - Russian :ru:
 - Mandarin :cn:
+- 
 ## Fuctions
-Time zone selection
-
-Theme control
-- change the face of clock when click the 'Theme' button
-
-## Usage
-123
-### Required Libraries
-
-- **PyQt6**:
-    ```bash
-    pip install PyQt6
-    ```
-- **pytz**:
-    ```bash
-    pip install pytz
-    ```
-- **gTTS** (Google Text-to-Speech):
-    ```bash
-    pip install gTTS
-    ```
-- **playsound**:
-    ```bash
-    pip install playsound
-    ```
-- **python-dateutil**:
-    ```bash
-    pip install python-dateutil
-    ```
-- **tzlocal**:
-    ```bash
-    pip install tzlocal
-    ```
+- Time zone selection
+- Theming control: change the face of clock and keep it even after the application is closed
+- Voice Speed control
+- 12\24 Format Switch
+  
 ## Group Members
 - Igor Marchenko
 - Youyang Cai
