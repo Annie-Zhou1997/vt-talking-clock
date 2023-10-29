@@ -181,6 +181,8 @@ class TalkingClockApp(QWidget):
                     hour -= 12
                 if minute == 0:
                     audio_files = ['current_time.wav'] + en_convert(hour) + ['en_o_clock.WAV'] + time_suffix
+                elif minute >0 and minute < 10:
+                    audio_files = ['current_time.wav'] + en_convert(hour) + ['en_0(o).WAV'] + en_convert(minute) + time_suffix    
                 elif minute == 15:
                     audio_files = ['current_time.wav'] + ['en_quarter_past.WAV'] + en_convert(hour) + time_suffix
                 elif minute == 30:
