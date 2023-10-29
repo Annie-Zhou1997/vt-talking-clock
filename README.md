@@ -108,28 +108,33 @@ These are some basic ways and usages of telling time in Chinese. Habits may vary
 :high_brightness:However, in our project, we have not adopted overly complex Chinese time expressions. After the millennium, native Chinese speakers rarely say "一刻"(Quarter) in Mandarin.
 
 ## English Time Expressions :globe_with_meridians:
-In English, the formant of telling time is:   
+In English, the basic formant of telling time is:   
 ``"The current time is" + hour +  minutes + "AM/PM"``
 ### On the Hour
-When the minutes are `00`, we use the phrase "o'clock". 
+When the minutes are `00`, we use the phrase "o'clock".   
+``"The current time is" + hour +  "o'clock" + "AM/PM``
 
 - 3:00: "It's three o'clock."
 - 8:00: "It's eight o'clock."
 
 ### Half Past
-When the minutes are `30`, we use the phrase "half past".
+When the minutes are `30`, we use the phrase "half past".  
+``"The current time is" + "half past" +  hour + "AM/PM"``
 
 - 3:30: "It's half past three."
 - 8:30: "It's half past eight."
 
 ### Quarter Past
-When the minutes are `15`, we use the phrase "quarter past".
+When the minutes are `15`, we use the phrase "quarter past".   
+``"The current time is" + "quarter past " +  hour + "AM/PM"``
+
 
 - 3:15: "It's quarter past three."
 - 8:15: "It's quarter past eight."
 
 ### Quarter To
-When the minutes are `45`, we use the phrase "quarter to" for the next hour.
+When the minutes are `45`, we use the phrase "quarter to" for the next hour.   
+``"The current time is" + "quarter to " +  ``1 if hour == 12 else hour + 1`` + "AM/PM"``
 
 - 2:45: "It's quarter to three."
 - 7:45: "It's quarter to eight."
