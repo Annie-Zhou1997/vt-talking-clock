@@ -134,7 +134,7 @@ When the minutes are `15`, we use the phrase "quarter past".
 
 ### Quarter To
 When the minutes are `45`, we use the phrase "quarter to" for the next hour.   
-``"The current time is" + "quarter to " + `` ``1 if hour == 12 else hour + 1`` ``+ "AM/PM"``
+``"The current time is" + "quarter to " + `` ``(1 if hour == 12 else hour + 1)`` ``+ "AM/PM"``
 
 - 2:45: "It's quarter to three."
 - 7:45: "It's quarter to eight."
