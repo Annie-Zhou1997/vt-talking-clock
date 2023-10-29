@@ -1,3 +1,4 @@
+
 # Vt-talking-clock :diamond_shape_with_a_dot_inside:
 ## Project description
 This is the README for our group project.
@@ -53,7 +54,31 @@ Theme control
    
 # Linguistic rules for telling time
 ## Russian :ru:
-Russian 
+In the Russian language, when talking about time, we have particular ways of handling minutes. 
+
+If the number of minutes isn't a multiple of five, we simply state the hours and minutes in the 24-hour format:
+**15:55** `Пятнадцать часов пятьдесят пять минут`
+
+Additionally, since there is declension in Russian, if it's one hour or one minute, we use the singular nominative form, like 'одна *минута*' meaning 'one minute':
+**19:01** `Девятнадцать часов одна минута`
+
+However, when it's two, three, or four hours or minutes, we use the so-called count form, like 'две *минуты*' for 'two minutes'
+**19:02** `Девятнадцать часов две минуты`
+
+Furthermore, because Russian has gender distinction, 'hour' is masculine, and 'minute' is feminine, which affects how we say one and two: '*два* часа,' but '*две* минуты’. 
+
+If it's five or more hours or minutes, we switch to the plural genitive form, like 'семь минут' for 'seven minutes':
+**19:07** `Девятнадцать часов семь минут`
+
+When the number of minutes is divisible by five (excluding 25 and 35), we use a 12-hour system. When the amount of minutes is thirty, we use the word "half" (половина), for example, 'half of the eighth’ stands for 19:30:
+**19:30** `Половина восьмого` or `Девятнадцать часов тридцать минут`
+
+When we have five, ten, fifteen, or twenty minutes, we use the word 'minutes' in the expression, like ‘five minutes of the eighth”:
+**19:05** `Пять минут восьмого` or `Девятнадцать часов пять минут`
+
+For cases like 40, 45, 50, or 55 minutes, we use the word "without" (без) followed by the remaining minutes until the next hour. For example, for 19:55, we would say ‘eight without five:
+**19:55** `Без пяти восемь` or `Девятнадцать часов пятьдесят пять минут`
+
 ## 汉语时间表达规则 (Chinese Mandarin Time Expression) :cn:
 In Chinese, the formant of telling time is:   
 ``"The current time is" + hour + "point" + minutes/"half"/"o'clock" + 'minutes'(or not)``
@@ -157,8 +182,6 @@ To distinguish between morning and afternoon/evening, we use "AM" for times from
 - 3:00 AM: "It's three o'clock in the morning."
 - 3:00 PM: "It's three o'clock in the afternoon."
   
-### Note :bulb:
-Due to very limited time, we have only adopted expressions such as "On the Hour," "Half Past," "Quarter Past," and "Quarter To."
 # GDPR Compliance
 
 The recordings in this project are provided by members of our team. The voice for Chinese is from Youyang Cai, for Russian, it's Igor Marchenko, and for English, it's Annie Zhou. Dutch speech synthesis was generated using Google's [gTTS](https://gtts.readthedocs.io/en/latest/license.html). Therefore, the clock data in this project complies with GDPR regulations.
